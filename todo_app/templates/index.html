@@ -16,12 +16,15 @@
           <li class="list-group-item">
           <div class="container">
               <div class = "row">
-                  <div class="col-sm-9">
+                  <div class="col-9">
                       {{ item.title }}
                  </div>
-                  <div class = "col-sm-3">
-                      <a class ="btn btn-outline-success" href="complete_items/{{ item.id }}" role="button">
+                  <div class = "col-3">
+                      <a class ="btn btn-outline-success" href="complete_item/{{ item.id }}" role="button">
               Completed
+              </a>
+                      <a class ="btn btn-danger" href="delete_item/{{ item.id }}" role="button">
+              Delete
               </a>
                   </div>
               </div>
@@ -34,9 +37,14 @@
               <li class="list-group-item">
           <div class="container">
               <div class = "row">
-                  <div class="col-sm-9">
+                  <div class="col-11">
                       {{ item.title }}
                  </div>
+                  <div class = "col-1">
+                      <a class ="btn btn-danger" href="delete_item/{{ item.id }}" role="button">
+              Delete
+              </a>
+                  </div>
               </div>
           </div>
           </li>
