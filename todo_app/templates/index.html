@@ -9,9 +9,10 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h2>Items</h2>
+      <h2>Tasks</h2>
+      <h3>To be completed</h3>
       <ul class="list-group mb-4">
-        {% for item in items %}
+        {% for item in items if item["status"] == "Not Started" %}
           <li class="list-group-item">
           <div class="container">
               <div class = "row">
@@ -27,6 +28,19 @@
           </div>
           </li>
         {% endfor %}
+      <h3>Completed</h3>
+      <ul class="list-group mb-4">
+          {% for item in items if item["status"] == "Completed" %}
+              <li class="list-group-item">
+          <div class="container">
+              <div class = "row">
+                  <div class="col-sm-9">
+                      {{ item.title }}
+                 </div>
+              </div>
+          </div>
+          </li>
+          {% endfor %}
       </ul>
     </div>
   </div>
