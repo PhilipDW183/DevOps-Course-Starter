@@ -13,9 +13,9 @@ def index():
     return render_template("index.html", items=items)
 
 
-@app.route('/add_items', methods=["POST"])
-def create_items():
+@app.route('/create_new_task', methods=["POST"])
+def create_new_task():
     new_item = request.form.get('todo')
     add_item(new_item)
-    return redirect("/")
+    return redirect(url_for("index"))
 
