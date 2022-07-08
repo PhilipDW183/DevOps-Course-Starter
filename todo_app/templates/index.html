@@ -12,7 +12,10 @@
       <h2>Items</h2>
       <ul class="list-group mb-4">
         {% for item in items %}
-          <li>{{ item.title }}</li>
+          <li>
+              {{ item.title }}
+            <a href="complete_items/{{ item.id }}">Completed</a>
+          </li>
         {% endfor %}
       </ul>
     </div>
