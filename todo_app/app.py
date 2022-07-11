@@ -1,8 +1,17 @@
 from flask import Flask, render_template, url_for, redirect, request
-from todo_app.data.session_items import get_items, add_item, save_item, get_item, remove_item
+from todo_app.data.session_items import add_item, save_item, get_item, remove_item
+from todo_app.data.trello_items import get_items
+from dotenv import load_dotenv
+import os
 
 
 from todo_app.flask_config import Config
+
+load_dotenv()
+
+board_id = os.getenv("BOARD_ID")
+apikey = os.getenv("APIKEY")
+token = os.getenv("TOKEN")
 
 app = Flask(__name__)
 app.config.from_object(Config())
@@ -10,7 +19,7 @@ app.config.from_object(Config())
 
 @app.route('/')
 def index():
-    items = get_items()
+    items = get_items(board_id, apikey, token)
     return render_template("index.html", items=items)
 
 
