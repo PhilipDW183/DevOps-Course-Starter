@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request
-from todo_app.data.session_items import add_item, save_item, get_item, remove_item
-from todo_app.data.trello_items import get_items
+from todo_app.data.session_items import save_item, get_item, remove_item
+from todo_app.data.trello_items import get_items, add_item
 from dotenv import load_dotenv
 import os
 
@@ -26,7 +26,7 @@ def index():
 @app.route('/create_new_task', methods=["POST"])
 def create_new_task():
     new_item = request.form.get('todo')
-    add_item(new_item)
+    add_item(new_item, apikey, token)
     return redirect(url_for("index"))
 
 

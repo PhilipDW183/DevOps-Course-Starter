@@ -57,6 +57,34 @@ def get_items(board_id, apikey, token):
     return response
 
 
+def add_item(title, apikey, token):
+    """
+    Adds a new item with the specified title to the session.
+
+    Args
+        title: The title of the item.
+        apikey: apikey for accessing trello
+        token: api token for accessing trello
+
+    Returns
+        item: The saved item.
+    """
+
+    target_url = f"https://api.trello.com/1/cards"
+
+    params = {
+        "key": apikey,
+        "token": token,
+        "name": title,
+        #idList hardcoded for now as we are only adding to one list
+        "idList": "62cc1a1f3eac6c0953e9df48"
+    }
+
+    response = call_api(target_url, "POST", params)
+
+    return response.get("id")
+
+
 if __name__ == "__main__":
 
     load_dotenv()
@@ -65,8 +93,11 @@ if __name__ == "__main__":
     apikey = os.getenv("APIKEY")
     token = os.getenv("TOKEN")
 
-    response = get_items(board_id, apikey, token)
-    print(response)
+    get_items_response = get_items(board_id, apikey, token)
+    print(get_items_response)
+
+    add_response = add_item("Checking this works again", apikey, token)
+    print(add_response)
 
 
 
