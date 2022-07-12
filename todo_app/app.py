@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request
-from todo_app.data.session_items import save_item, get_item, remove_item
-from todo_app.data.trello_items import get_items, add_item
+from todo_app.data.session_items import get_item, remove_item
+from todo_app.data.trello_items import get_items, add_item, finish_item
 from dotenv import load_dotenv
 import os
 
@@ -32,9 +32,7 @@ def create_new_task():
 
 @app.route('/complete_item/<id>')
 def complete_item(id):
-    item_to_complete = get_item(id)
-    item_to_complete["status"] = "Completed"
-    save_item(item_to_complete)
+    complete_id = finish_item(id, apikey, token)
     return redirect(url_for("index"))
 
 

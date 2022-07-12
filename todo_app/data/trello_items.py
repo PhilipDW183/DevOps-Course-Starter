@@ -85,6 +85,29 @@ def add_item(title, apikey, token):
     return response.get("id")
 
 
+def finish_item(card_id, apikey, token):
+    """
+    Changes and item to complete
+
+    Args
+        card_id: id of the item we want to update
+
+    Output
+        id: id of the updated item
+    """
+    target_url = f"https://api.trello.com/1/cards/{card_id}"
+
+    params = {
+        "key": apikey,
+        "token": token,
+        "idList": "62cc1a1f3eac6c0953e9df4a"
+    }
+
+    api_response = call_api(target_url, "PUT", params)
+
+    return id
+
+
 if __name__ == "__main__":
 
     load_dotenv()
@@ -96,8 +119,10 @@ if __name__ == "__main__":
     get_items_response = get_items(board_id, apikey, token)
     print(get_items_response)
 
-    add_response = add_item("Checking this works again", apikey, token)
+    add_response = add_item("Try again", apikey, token)
     print(add_response)
+
+    finish_item(get_items_response[0].get("id"), apikey, token)
 
 
 
