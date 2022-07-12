@@ -42,11 +42,16 @@
               <li class="list-group-item">
           <div class="container">
               <div class = "row">
-                  <div class="col-11">
+                  <div class="col-9">
                       <b>Title:</b> {{ item.name }} <br/>
                       <b>Description</b> {{ item.description }} <br/>
                       <b>Due date: </b> {{ item.due_date }}
                  </div>
+                  <div class = "col-2">
+                      <a class ="btn btn-outline-warning" href="uncomplete_item/{{ item.id }}" role="button">
+              To-do
+              </a>
+                  </div>
                   <div class = "col-1">
                       <a class ="btn btn-danger" href="delete_item/{{ item.id }}" role="button">
               Delete

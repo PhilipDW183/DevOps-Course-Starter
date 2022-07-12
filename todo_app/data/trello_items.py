@@ -112,24 +112,24 @@ def add_item(title, description, due_date, apikey, token):
     return response.get("id")
 
 
-def finish_item(card_id, apikey, token):
-    """
-    Changes and item to complete
+def change_item_status(card_id, destination, apikey, token):
+    """Change item status to another list
 
     Args
-        card_id: id of the item we want to update
+        card_id: id of the item we want to change
+        destination: where we want to change the item to
         apikey: apikey for accessing trello
         token: api token for accessing trello
 
     Output
-        id: id of the updated item
+        id: id of the update item
     """
     target_url = f"https://api.trello.com/1/cards/{card_id}"
 
     params = {
         "key": apikey,
         "token": token,
-        "idList": "62cc1a1f3eac6c0953e9df4a"
+        "idList": destination
     }
 
     api_response = call_api(target_url, "PUT", params)
