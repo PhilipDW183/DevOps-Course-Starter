@@ -21,6 +21,11 @@ app.config.from_object(Config())
 def index():
     items = get_items(board_id, apikey, token)
     items = [Item.from_trello_cards(item) for item in items]
+    #clean date in each item if they have due date
+    for item in items:
+        if item.due_date:
+            item.clean_date()
+
     return render_template("index.html", items=items)
 
 
@@ -28,7 +33,12 @@ def index():
 def create_new_task():
     item_title = request.form.get('todo')
     item_description = request.form.get("description")
-    add_item(item_title, item_description, apikey, token)
+    item_due_date = request.form.get("date")
+    add_item(item_title,
+             item_description,
+             item_due_date,
+             apikey,
+             token)
     return redirect(url_for("index"))
 
 

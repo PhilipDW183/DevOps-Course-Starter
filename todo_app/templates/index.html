@@ -17,7 +17,8 @@
           <div class="container">
               <div class = "row">
                   <div class="col-9">
-                      <b>{{ item.name }}</b>: {{ item.description }}
+                      <b>{{ item.name }}</b>: {{ item.description }} <br/>
+                      <b>Due date</b>: {{  item.due_date }}
                  </div>
                   <div class = "col-2">
                       <a class ="btn btn-success" href="complete_item/{{ item.id }}" role="button">
@@ -41,7 +42,8 @@
           <div class="container">
               <div class = "row">
                   <div class="col-11">
-                      <b>{{ item.name }}</b>: {{ item.description }}
+                      <b>{{ item.name }}</b>: {{ item.description }} <br/>
+                      <b>Due date</b>: {{  item.due_date }}
                  </div>
                   <div class = "col-1">
                       <a class ="btn btn-danger" href="delete_item/{{ item.id }}" role="button">
@@ -56,7 +58,7 @@
     </div>
   </div>
 
-    <div class = "form_collect">
+    <div class = "form_collect mb-3">
         <h3 class="mb-3 mt-3">Create a new task</h3>
         <form action = {{ url_for("create_new_task") }} method="post">
             <div class="form-group">
@@ -67,6 +69,10 @@
                 <label for="description">Enter task description: </label>
                 <input type = "text" name="description" id="description"
                        class="form-control" placeholder="Description" required>
+            </div>
+            <div class="form-group date" data-provide="datepicker">
+                <label for="date">Enter due date: </label>
+                <input type = "date" class="form-control" name="date" id="date" required>
             </div>
             <div class = "form_item">
                 <Button type="submit" class="btn btn-primary btn-large">Add</Button>

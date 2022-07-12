@@ -5,15 +5,25 @@ from dotenv import load_dotenv
 
 class Item:
 
-    def __init__(self, id, name, list_id, description):
+    def __init__(self, id, name, list_id, description, due_date):
         self.id = id
         self.name = name
         self.idList = list_id
         self.description = description
+        self.due_date = due_date
 
     @classmethod
     def from_trello_cards(cls, card):
-        return cls(card["id"], card["name"], card["idList"], card["desc"])
+        return cls(card["id"],
+                   card["name"],
+                   card["idList"],
+                   card["desc"],
+                   card["due"])
+
+    def clean_date(self):
+        if self.due_date:
+            #we can do this as it will always return YYYY-MM-DD
+            self.due_date = self.due_date[0:10]
 
 
 def call_api(url, method, query, headers=None):
@@ -70,12 +80,14 @@ def get_items(board_id, apikey, token):
     return response
 
 
-def add_item(title, description, apikey, token):
+def add_item(title, description, due_date, apikey, token):
     """
     Adds a new item with the specified title to the session.
 
     Args
         title: The title of the item.
+        description: description of the item
+        due_date: due_date of the item
         apikey: apikey for accessing trello
         token: api token for accessing trello
 
@@ -91,7 +103,8 @@ def add_item(title, description, apikey, token):
         "name": title,
         #idList hardcoded for now as we are only adding to one list
         "idList": "62cc1a1f3eac6c0953e9df48",
-        "desc": description
+        "desc": description,
+        "due": due_date
     }
 
     response = call_api(target_url, "POST", params)
@@ -164,6 +177,7 @@ if __name__ == "__main__":
 
     add_response = add_item("Create a new test item",
                             "This should create a new test item",
+                            "2022-08-23",
                             apikey,
                             token)
 
