@@ -62,13 +62,13 @@ def call_api(url, method, query, headers=None):
         print(f"Error occurred: {err}")
 
 
-def get_items(board_id, apikey, token):
+def get_items(board_id, api_key, token):
     """
     Get all action items on the trello board
 
     Inputs
         board_id: id of the board we want the items for
-        apikey: apikey for accessing trello
+        api_key: api_key for accessing trello
         token: api token for accessing trello
 
     Returns
@@ -78,7 +78,7 @@ def get_items(board_id, apikey, token):
     target_url = f"https://api.trello.com/1/boards/{board_id}/cards"
 
     params = {
-        "key": apikey,
+        "key": api_key,
         "token": token
     }
 
@@ -87,7 +87,7 @@ def get_items(board_id, apikey, token):
     return response
 
 
-def add_item(title, description, due_date, apikey, token):
+def add_item(title, description, due_date, destination, api_key, token):
     """
     Adds a new item with the specified title to the session.
 
@@ -95,8 +95,9 @@ def add_item(title, description, due_date, apikey, token):
         title: The title of the item.
         description: description of the item
         due_date: due_date of the item
-        apikey: apikey for accessing trello
+        api_key: api_key for accessing trello
         token: api token for accessing trello
+        destination: target list id to add to
 
     Returns
         item: The saved item.
@@ -105,11 +106,10 @@ def add_item(title, description, due_date, apikey, token):
     target_url = f"https://api.trello.com/1/cards"
 
     params = {
-        "key": apikey,
+        "key": api_key,
         "token": token,
         "name": title,
-        #idList hardcoded for now as we are only adding to one list
-        "idList": "62cc1a1f3eac6c0953e9df48",
+        "idList": destination,
         "desc": description,
         "due": due_date
     }
@@ -119,13 +119,13 @@ def add_item(title, description, due_date, apikey, token):
     return response.get("id")
 
 
-def change_item_status(card_id, destination, apikey, token):
+def change_item_status(card_id, destination, api_key, token):
     """Change item status to another list
 
     Args
         card_id: id of the item we want to change
         destination: where we want to change the item to
-        apikey: apikey for accessing trello
+        api_key: api_key for accessing trello
         token: api token for accessing trello
 
     Output
@@ -134,7 +134,7 @@ def change_item_status(card_id, destination, apikey, token):
     target_url = f"https://api.trello.com/1/cards/{card_id}"
 
     params = {
-        "key": apikey,
+        "key": api_key,
         "token": token,
         "idList": destination
     }
@@ -144,13 +144,13 @@ def change_item_status(card_id, destination, apikey, token):
     return id
 
 
-def remove_item(card_id, apikey, token):
+def remove_item(card_id, api_key, token):
     """
     Removes an existing item from the session. If no item matching the id then nothing is returned
 
     Args:
         card_id: item id to be removed
-        apikey: apikey for accessing trello
+        api_key: api_key for accessing trello
         token: api token for accessing trello
 
     Returns:
@@ -160,7 +160,7 @@ def remove_item(card_id, apikey, token):
     target_url = f"https://api.trello.com/1/cards/{card_id}"
 
     params = {
-        "key": apikey,
+        "key": api_key,
         "token": token
     }
 
@@ -169,12 +169,12 @@ def remove_item(card_id, apikey, token):
     return card_id
 
 
-def get_list_names(board_id, apikey, token):
+def get_list_names(board_id, api_key, token):
     """Get a list of all list names within the trello board
 
     Args
         board_id: id of the board we are going to use
-        apikey: trello api key
+        api_key: trello api key
         token: trello token
 
     output
@@ -184,7 +184,7 @@ def get_list_names(board_id, apikey, token):
     target_url = f"https://api.trello.com/1/boards/{board_id}/lists"
 
     params = {
-        "key": apikey,
+        "key": api_key,
         "token": token
     }
 
@@ -210,35 +210,35 @@ if __name__ == "__main__":
     load_dotenv()
 
     board_id = os.getenv("BOARD_ID")
-    apikey = os.getenv("APIKEY")
+    api_key = os.getenv("API_KEY")
     token = os.getenv("TOKEN")
 
-    board_lists = get_list_names(board_id, apikey, token)
+    board_lists = get_list_names(board_id, api_key, token)
 
     get_items_response = get_items(board_id,
-                                   apikey,
+                                   api_key,
                                    token)
 
     print(get_items_response)
 
     response = get_items("62cc1dd1e32d46579e3e2218",
-              apikey,
+              api_key,
               token)
     print(response)
 
     add_response = add_item("Create a new test item",
                             "This should create a new test item",
                             "2022-08-23",
-                            apikey,
+                            api_key,
                             token)
 
     change_item_status(get_items_response[0].get("id"),
                        board_lists.get("done"),
-                apikey,
+                api_key,
                 token)
 
     delete_response = remove_item(get_items_response[0].get("id"),
-                                  apikey,
+                                  api_key,
                                   token)
 
 
