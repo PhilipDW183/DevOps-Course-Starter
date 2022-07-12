@@ -3,6 +3,18 @@ import os
 from dotenv import load_dotenv
 
 
+class Item:
+
+    def __init__(self, id, name, list_id):
+        self.id = id
+        self.name = name
+        self.idList = list_id
+
+    @classmethod
+    def from_trello_cards(cls, card):
+        return cls(card["id"], card["name"], card["idList"])
+
+
 def call_api(url, method, query, headers=None):
     """call the specified url with the specified call and paramaters
 

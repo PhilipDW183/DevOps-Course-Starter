@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request
 from todo_app.data.session_items import get_item
-from todo_app.data.trello_items import get_items, add_item, finish_item, remove_item
+from todo_app.data.trello_items import get_items, add_item, finish_item, remove_item, Item
 from dotenv import load_dotenv
 import os
 
@@ -20,6 +20,7 @@ app.config.from_object(Config())
 @app.route('/')
 def index():
     items = get_items(board_id, apikey, token)
+    items = [Item.from_trello_cards(item) for item in items]
     return render_template("index.html", items=items)
 
 
