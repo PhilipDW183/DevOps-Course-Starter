@@ -10,15 +10,16 @@
   <div class="row">
     <div class="col-md-12">
       <h2 class="mb-3" >Tasks</h2>
-      <h3 class="mb-3">To be completed</h3>
+      <h3 class="mb-3">To Do</h3>
       <ul class="list-group mb-4">
         {% for item in items if item["idList"] == "62cc1a1f3eac6c0953e9df48" %}
           <li class="list-group-item">
           <div class="container">
               <div class = "row">
                   <div class="col-9">
-                      <b>{{ item.name }}</b>: {{ item.description }} <br/>
-                      <b>Due date</b>: {{  item.due_date }}
+                      <b>Title:</b> {{ item.name }} <br/>
+                      <b>Description</b> {{ item.description }} <br/>
+                      <b>Due date: </b> {{ item.due_date }}
                  </div>
                   <div class = "col-2">
                       <a class ="btn btn-success" href="complete_item/{{ item.id }}" role="button">
@@ -42,8 +43,9 @@
           <div class="container">
               <div class = "row">
                   <div class="col-11">
-                      <b>{{ item.name }}</b>: {{ item.description }} <br/>
-                      <b>Due date</b>: {{  item.due_date }}
+                      <b>Title:</b> {{ item.name }} <br/>
+                      <b>Description</b> {{ item.description }} <br/>
+                      <b>Due date: </b> {{ item.due_date }}
                  </div>
                   <div class = "col-1">
                       <a class ="btn btn-danger" href="delete_item/{{ item.id }}" role="button">
