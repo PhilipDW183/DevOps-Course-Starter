@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request
-from todo_app.data.session_items import get_item, remove_item
-from todo_app.data.trello_items import get_items, add_item, finish_item
+from todo_app.data.session_items import get_item
+from todo_app.data.trello_items import get_items, add_item, finish_item, remove_item
 from dotenv import load_dotenv
 import os
 
@@ -38,6 +38,6 @@ def complete_item(id):
 
 @app.route('/delete_item/<id>')
 def delete_item(id):
-    remove_item(id)
+    remove_item(id, apikey, token)
     return redirect(url_for("index"))
 

@@ -27,7 +27,7 @@ def call_api(url, method, query, headers=None):
         )
         return response.json()
 
-    except E as err:
+    except Exception as err:
 
         raise Exception("Connection error. Please check parameters and try again", err)
 
@@ -91,6 +91,8 @@ def finish_item(card_id, apikey, token):
 
     Args
         card_id: id of the item we want to update
+        apikey: apikey for accessing trello
+        token: api token for accessing trello
 
     Output
         id: id of the updated item
@@ -108,6 +110,31 @@ def finish_item(card_id, apikey, token):
     return id
 
 
+def remove_item(card_id, apikey, token):
+    """
+    Removes an existing item from the session. If no item matching the id then nothing is returned
+
+    Args:
+        card_id: item id to be removed
+        apikey: apikey for accessing trello
+        token: api token for accessing trello
+
+    Returns:
+        id: item id to be removed
+
+    """
+    target_url = f"https://api.trello.com/1/cards/{card_id}"
+
+    params = {
+        "key": apikey,
+        "token": token
+    }
+
+    api_response = call_api(target_url, "DELETE", params)
+
+    return card_id
+
+
 if __name__ == "__main__":
 
     load_dotenv()
@@ -119,10 +146,13 @@ if __name__ == "__main__":
     get_items_response = get_items(board_id, apikey, token)
     print(get_items_response)
 
-    add_response = add_item("Try again", apikey, token)
-    print(add_response)
+    # add_response = add_item("Try again", apikey, token)
+    # print(add_response)
 
-    finish_item(get_items_response[0].get("id"), apikey, token)
+    # finish_item(get_items_response[0].get("id"), apikey, token)
+
+    delete_response = remove_item(get_items_response[0].get("id"), apikey, token)
+    print(delete_response)
 
 
 
