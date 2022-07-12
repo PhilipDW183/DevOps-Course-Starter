@@ -26,8 +26,9 @@ def index():
 
 @app.route('/create_new_task', methods=["POST"])
 def create_new_task():
-    new_item = request.form.get('todo')
-    add_item(new_item, apikey, token)
+    item_title = request.form.get('todo')
+    item_description = request.form.get("description")
+    add_item(item_title, item_description, apikey, token)
     return redirect(url_for("index"))
 
 

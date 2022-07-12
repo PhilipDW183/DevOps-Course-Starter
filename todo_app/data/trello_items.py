@@ -5,14 +5,15 @@ from dotenv import load_dotenv
 
 class Item:
 
-    def __init__(self, id, name, list_id):
+    def __init__(self, id, name, list_id, description):
         self.id = id
         self.name = name
         self.idList = list_id
+        self.description = description
 
     @classmethod
     def from_trello_cards(cls, card):
-        return cls(card["id"], card["name"], card["idList"])
+        return cls(card["id"], card["name"], card["idList"], card["desc"])
 
 
 def call_api(url, method, query, headers=None):
@@ -69,7 +70,7 @@ def get_items(board_id, apikey, token):
     return response
 
 
-def add_item(title, apikey, token):
+def add_item(title, description, apikey, token):
     """
     Adds a new item with the specified title to the session.
 
@@ -89,7 +90,8 @@ def add_item(title, apikey, token):
         "token": token,
         "name": title,
         #idList hardcoded for now as we are only adding to one list
-        "idList": "62cc1a1f3eac6c0953e9df48"
+        "idList": "62cc1a1f3eac6c0953e9df48",
+        "desc": description
     }
 
     response = call_api(target_url, "POST", params)
@@ -155,16 +157,23 @@ if __name__ == "__main__":
     apikey = os.getenv("APIKEY")
     token = os.getenv("TOKEN")
 
-    get_items_response = get_items(board_id, apikey, token)
+    get_items_response = get_items(board_id,
+                                   apikey,
+                                   token)
     print(get_items_response)
 
-    # add_response = add_item("Try again", apikey, token)
-    # print(add_response)
+    add_response = add_item("Create a new test item",
+                            "This should create a new test item",
+                            apikey,
+                            token)
 
-    # finish_item(get_items_response[0].get("id"), apikey, token)
+    finish_item(get_items_response[0].get("id"),
+                apikey,
+                token)
 
-    delete_response = remove_item(get_items_response[0].get("id"), apikey, token)
-    print(delete_response)
+    delete_response = remove_item(get_items_response[0].get("id"),
+                                  apikey,
+                                  token)
 
 
 
