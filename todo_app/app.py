@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, redirect, request
 from todo_app.data.session_items import get_item
-from todo_app.data.trello_items import get_items, add_item, change_item_status, remove_item, Item
+from todo_app.data.trello_items import get_items, add_item, change_item_status, remove_item, Item, get_list_names
 from dotenv import load_dotenv
 import os
 
@@ -16,6 +16,8 @@ token = os.getenv("TOKEN")
 app = Flask(__name__)
 app.config.from_object(Config())
 
+list_targets = get_list_names(board_id, apikey, token)
+
 
 @app.route('/')
 def index():
@@ -26,7 +28,7 @@ def index():
         if item.due_date:
             item.clean_date()
 
-    return render_template("index.html", items=items)
+    return render_template("index.html", items=items, list_targets=list_targets)
 
 
 @app.route('/create_new_task', methods=["POST"])
@@ -45,7 +47,7 @@ def create_new_task():
 @app.route('/complete_item/<id>')
 def complete_item(id):
     #destination list is hardcoded id
-    destination_list = "62cc1a1f3eac6c0953e9df4a"
+    destination_list = list_targets["Done"]
     complete_id = change_item_status(id, destination_list, apikey, token)
     return redirect(url_for("index"))
 
@@ -53,7 +55,7 @@ def complete_item(id):
 @app.route('/uncomplete_item/<id>')
 def uncomplete_item(id):
     #destination list is hardcoded id
-    destination_list = "62cc1a1f3eac6c0953e9df48"
+    destination_list = list_targets["To Do"]
     uncomplete_id = change_item_status(id, destination_list, apikey, token)
     return redirect(url_for("index"))
 

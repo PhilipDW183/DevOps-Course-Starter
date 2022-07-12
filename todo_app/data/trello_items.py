@@ -48,11 +48,18 @@ def call_api(url, method, query, headers=None):
             headers=headers,
             params=query
         )
+
+        response.raise_for_status()
+
         return response.json()
+
+    except requests.exceptions.HTTPError as http_err:
+
+        print(f"HTTP error occurred: {http_err}")
 
     except Exception as err:
 
-        raise Exception("Connection error. Please check parameters and try again", err)
+        print(f"Error occurred: {err}")
 
 
 def get_items(board_id, apikey, token):
@@ -162,6 +169,42 @@ def remove_item(card_id, apikey, token):
     return card_id
 
 
+def get_list_names(board_id, apikey, token):
+    """Get a list of all list names within the trello board
+
+    Args
+        board_id: id of the board we are going to use
+        apikey: trello api key
+        token: trello token
+
+    output
+        target_lists: a list of all list ids from the trello board we are interested in
+    """
+
+    target_url = f"https://api.trello.com/1/boards/{board_id}/lists"
+
+    params = {
+        "key": apikey,
+        "token": token
+    }
+
+    api_response = call_api(target_url, "GET", params)
+
+    target_lists = {"To Do": None,
+                    "Done": None}
+
+    #loop over the lists to get the list names that we need
+    for list in api_response:
+        if list.get("name") in target_lists.keys():
+            target_lists[list.get("name")] = list.get("id")
+
+    for k, v in target_lists.items():
+        if not v:
+            raise Exception(f"No list named {k}. Please create a list with this name")
+
+    return target_lists
+
+
 if __name__ == "__main__":
 
     load_dotenv()
@@ -170,10 +213,18 @@ if __name__ == "__main__":
     apikey = os.getenv("APIKEY")
     token = os.getenv("TOKEN")
 
+    board_lists = get_list_names(board_id, apikey, token)
+
     get_items_response = get_items(board_id,
                                    apikey,
                                    token)
+
     print(get_items_response)
+
+    response = get_items("62cc1dd1e32d46579e3e2218",
+              apikey,
+              token)
+    print(response)
 
     add_response = add_item("Create a new test item",
                             "This should create a new test item",
@@ -181,7 +232,8 @@ if __name__ == "__main__":
                             apikey,
                             token)
 
-    finish_item(get_items_response[0].get("id"),
+    change_item_status(get_items_response[0].get("id"),
+                       board_lists.get("done"),
                 apikey,
                 token)
 
