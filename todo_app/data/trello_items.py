@@ -1,7 +1,7 @@
 import requests
 import os
 from dotenv import load_dotenv
-
+from dateutil import parser
 
 class Item:
 
@@ -22,8 +22,8 @@ class Item:
 
     def clean_date(self):
         if self.due_date:
-            #we can do this as it will always return YYYY-MM-DD
-            self.due_date = self.due_date[0:10]
+            trello_date = parser.parse(self.due_date)
+            self.due_date = trello_date.date()
 
 
 def call_api(url, method, query, headers=None):
