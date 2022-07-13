@@ -1,5 +1,4 @@
 from flask import Flask, render_template, url_for, redirect, request
-from todo_app.data.session_items import get_item
 from todo_app.data.trello_items import get_items, add_item, change_item_status, remove_item, Item, get_list_names
 from dotenv import load_dotenv
 from os import environ
@@ -60,4 +59,3 @@ def uncomplete_item(id):
 def delete_item(id):
     remove_item(id)
     return redirect(url_for("index"))
-
