@@ -1,31 +1,57 @@
 from flask import Flask, render_template, url_for, redirect, request
-from todo_app.data.session_items import get_items, add_item, save_item, get_item, remove_item
+from todo_app.data.trello_items import get_items, add_item, change_item_status, remove_item, Item, get_list_names
+from dotenv import load_dotenv
+from os import environ
 
 
 from todo_app.flask_config import Config
 
+load_dotenv()
+
+board_id = environ.get("BOARD_ID")
+
 app = Flask(__name__)
 app.config.from_object(Config())
+
+list_targets = get_list_names(board_id)
 
 
 @app.route('/')
 def index():
-    items = get_items()
-    return render_template("index.html", items=items)
+    items = get_items(board_id)
+    items = [Item.from_trello_cards(item) for item in items]
+    #clean date in each item if they have due date
+    for item in items:
+        if item.due_date:
+            item.clean_date()
+
+    return render_template("index.html", items=items, list_targets=list_targets)
 
 
 @app.route('/create_new_task', methods=["POST"])
 def create_new_task():
-    new_item = request.form.get('todo')
-    add_item(new_item)
+    item_title = request.form.get('todo')
+    item_description = request.form.get("description")
+    item_due_date = request.form.get("date")
+    destination_list = list_targets["To Do"]
+    add_item(item_title,
+             item_description,
+             item_due_date,
+             destination_list)
     return redirect(url_for("index"))
 
 
 @app.route('/complete_item/<id>')
 def complete_item(id):
-    item_to_complete = get_item(id)
-    item_to_complete["status"] = "Completed"
-    save_item(item_to_complete)
+    destination_list = list_targets["Done"]
+    complete_id = change_item_status(id, destination_list)
+    return redirect(url_for("index"))
+
+
+@app.route('/uncomplete_item/<id>')
+def uncomplete_item(id):
+    destination_list = list_targets["To Do"]
+    uncomplete_id = change_item_status(id, destination_list)
     return redirect(url_for("index"))
 
 
@@ -33,4 +59,3 @@ def complete_item(id):
 def delete_item(id):
     remove_item(id)
     return redirect(url_for("index"))
-

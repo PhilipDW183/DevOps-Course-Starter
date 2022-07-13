@@ -10,14 +10,16 @@
   <div class="row">
     <div class="col-md-12">
       <h2 class="mb-3" >Tasks</h2>
-      <h3 class="mb-3">To be completed</h3>
+      <h3 class="mb-3">To Do</h3>
       <ul class="list-group mb-4">
-        {% for item in items if item["status"] == "Not Started" %}
+        {% for item in items if item["idList"] == list_targets["To Do"] %}
           <li class="list-group-item">
           <div class="container">
               <div class = "row">
                   <div class="col-9">
-                      {{ item.title }}
+                      <b>Title:</b> {{ item.name }} <br/>
+                      <b>Description</b> {{ item.description }} <br/>
+                      <b>Due date: </b> {{ item.due_date }}
                  </div>
                   <div class = "col-2">
                       <a class ="btn btn-success" href="complete_item/{{ item.id }}" role="button">
@@ -33,15 +35,23 @@
           </div>
           </li>
         {% endfor %}
+      </ul>
       <h3 class="mb-3 mt-3">Completed</h3>
       <ul class="list-group mb-4">
-          {% for item in items if item["status"] == "Completed" %}
+          {% for item in items if item["idList"] == list_targets["Done"] %}
               <li class="list-group-item">
           <div class="container">
               <div class = "row">
-                  <div class="col-11">
-                      {{ item.title }}
+                  <div class="col-9">
+                      <b>Title:</b> {{ item.name }} <br/>
+                      <b>Description</b> {{ item.description }} <br/>
+                      <b>Due date: </b> {{ item.due_date }}
                  </div>
+                  <div class = "col-2">
+                      <a class ="btn btn-outline-warning" href="uncomplete_item/{{ item.id }}" role="button">
+              To-do
+              </a>
+                  </div>
                   <div class = "col-1">
                       <a class ="btn btn-danger" href="delete_item/{{ item.id }}" role="button">
               Delete
@@ -55,11 +65,21 @@
     </div>
   </div>
 
-    <div class = "form_collect">
+    <div class = "form_collect mb-3">
+        <h3 class="mb-3 mt-3">Create a new task</h3>
         <form action = {{ url_for("create_new_task") }} method="post">
             <div class="form-group">
-                <label for="todo">Enter an item to complete: </label>
-                <input type = "text" name="todo" id="todo" class="form-control" placeholder="task" required>
+                <label for="todo">Enter task name: </label>
+                <input type = "text" name="todo" id="todo" class="form-control" placeholder="Name" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Enter task description: </label>
+                <input type = "text" name="description" id="description"
+                       class="form-control" placeholder="Description" required>
+            </div>
+            <div class="form-group date" data-provide="datepicker">
+                <label for="date">Enter due date: </label>
+                <input type = "date" class="form-control" name="date" id="date" required>
             </div>
             <div class = "form_item">
                 <Button type="submit" class="btn btn-primary btn-large">Add</Button>
