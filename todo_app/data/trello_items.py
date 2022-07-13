@@ -26,6 +26,11 @@ class Item:
             self.due_date = trello_date.date()
 
 
+def build_url(endpoint):
+    """Build the url with the desired endpoint for the trello api"""
+    return "https://api.trello.com/1" + endpoint
+
+
 def call_api(url, method, query, headers=None):
     """call the specified url with the specified call and paramaters
 
@@ -75,7 +80,7 @@ def get_items(board_id, api_key, token):
         response_json: a json of the response from the request
     """
 
-    target_url = f"https://api.trello.com/1/boards/{board_id}/cards"
+    target_url = build_url(f"/boards/{board_id}/cards")
 
     params = {
         "key": api_key,
@@ -103,7 +108,7 @@ def add_item(title, description, due_date, destination, api_key, token):
         item: The saved item.
     """
 
-    target_url = f"https://api.trello.com/1/cards"
+    target_url = build_url("/cards")
 
     params = {
         "key": api_key,
@@ -131,7 +136,8 @@ def change_item_status(card_id, destination, api_key, token):
     Output
         id: id of the update item
     """
-    target_url = f"https://api.trello.com/1/cards/{card_id}"
+
+    target_url = build_url(f"/cards/{card_id}")
 
     params = {
         "key": api_key,
@@ -157,7 +163,8 @@ def remove_item(card_id, api_key, token):
         id: item id to be removed
 
     """
-    target_url = f"https://api.trello.com/1/cards/{card_id}"
+
+    target_url = build_url(f"/cards/{card_id}")
 
     params = {
         "key": api_key,
@@ -181,7 +188,7 @@ def get_list_names(board_id, api_key, token):
         target_lists: a list of all list ids from the trello board we are interested in
     """
 
-    target_url = f"https://api.trello.com/1/boards/{board_id}/lists"
+    target_url = build_url(f"/boards/{board_id}/lists")
 
     params = {
         "key": api_key,
