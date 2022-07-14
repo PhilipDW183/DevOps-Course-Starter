@@ -23,3 +23,9 @@ class ViewModel:
         to_do_items_id = self.list_targets.get("To Do")
         to_do_items = [item for item in self.items if item.idList == to_do_items_id]
         return to_do_items
+
+    @property
+    def done_items(self):
+        done_items_id = self.list_targets.get("Done")
+        done_items = [item for item in self.items if item.idList == done_items_id]
+        return done_items

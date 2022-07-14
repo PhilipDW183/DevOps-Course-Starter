@@ -45,3 +45,10 @@ def test_doing_items_property(items_fixture, view_model_fixture):
     doing_items = view_model_fixture.doing_items
 
     assert doing_items == [items_fixture[1]]
+
+
+def test_done_items_property(items_fixture, view_model_fixture):
+
+    done_items = view_model_fixture.done_items
+
+    assert done_items == [items_fixture[2]]
