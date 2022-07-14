@@ -65,4 +65,16 @@ You should see output similar to the following:
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
+## Running tests
+
+If you are making any changes to the application, make sure to run tests after the changes have been 
+made so that no functionality has been changed, and it all works as expected. To run these tests, navigate 
+to the floor of the directory and run:
+
+```bash
+poetry run pytest
+```
+
+If any test fails, check the output to see why and adjust the code to ensure they continue to pass.
+
 
