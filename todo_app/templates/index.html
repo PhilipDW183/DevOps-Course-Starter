@@ -12,7 +12,7 @@
       <h2 class="mb-3" >Tasks</h2>
       <h3 class="mb-3">To Do</h3>
       <ul class="list-group mb-4">
-        {% for item in items if item["idList"] == list_targets["To Do"] %}
+        {% for item in view_model.items if item["idList"] == view_model.list_targets["To Do"] %}
           <li class="list-group-item">
           <div class="container">
               <div class = "row">
@@ -38,7 +38,7 @@
       </ul>
       <h3 class="mb-3 mt-3">Completed</h3>
       <ul class="list-group mb-4">
-          {% for item in items if item["idList"] == list_targets["Done"] %}
+          {% for item in view_model.items if item["idList"] == view_model.list_targets["Done"] %}
               <li class="list-group-item">
           <div class="container">
               <div class = "row">

@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, redirect, request
 from todo_app.data.trello_items import get_items, add_item, change_item_status, remove_item, Item, get_list_names
 from dotenv import load_dotenv
 from os import environ
-
+from todo_app.data.view_model import ViewModel
 
 from todo_app.flask_config import Config
 
@@ -25,7 +25,9 @@ def index():
         if item.due_date:
             item.clean_date()
 
-    return render_template("index.html", items=items, list_targets=list_targets)
+    item_view_model = ViewModel(items, list_targets)
+
+    return render_template("index.html", view_model=item_view_model)
 
 
 @app.route('/create_new_task', methods=["POST"])
