@@ -43,6 +43,13 @@ def create_new_task():
     return redirect(url_for("index"))
 
 
+@app.route("/doing_item/<id>")
+def doing_item(id):
+    destination_list = list_targets["Doing"]
+    doing_id = change_item_status(id, destination_list)
+    return redirect(url_for("index"))
+
+
 @app.route('/complete_item/<id>')
 def complete_item(id):
     destination_list = list_targets["Done"]
@@ -50,8 +57,8 @@ def complete_item(id):
     return redirect(url_for("index"))
 
 
-@app.route('/uncomplete_item/<id>')
-def uncomplete_item(id):
+@app.route('/to_do_item/<id>')
+def to_do_item(id):
     destination_list = list_targets["To Do"]
     uncomplete_id = change_item_status(id, destination_list)
     return redirect(url_for("index"))
