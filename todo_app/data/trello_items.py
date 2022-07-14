@@ -181,6 +181,7 @@ def get_list_names(board_id):
     api_response = call_api(target_url, "GET", params)
 
     target_lists = {"To Do": None,
+                    "Doing": None,
                     "Done": None}
 
     #loop over the lists to get the list names that we need
@@ -203,29 +204,3 @@ def build_params(params={}):
     full_params = get_auth_params()
     full_params.update(params)
     return full_params
-
-
-if __name__ == "__main__":
-
-    build_params = build_params()
-
-    board_id = environ.get("BOARD_ID")
-
-    board_lists = get_list_names(board_id)
-
-    get_items_response = get_items(board_id)
-
-    print(get_items_response)
-
-    response = get_items("62cc1dd1e32d46579e3e2218")
-    print(response)
-
-    add_response = add_item("Create a new test item",
-                            "This should create a new test item",
-                            "2022-08-23",
-                            board_lists.get("To Do"))
-
-    change_item_status(get_items_response[0].get("id"),
-                       board_lists.get("done"))
-
-    delete_response = remove_item(get_items_response[0].get("id"))

@@ -12,15 +12,46 @@
       <h2 class="mb-3" >Tasks</h2>
       <h3 class="mb-3">To Do</h3>
       <ul class="list-group mb-4">
-        {% for item in items if item["idList"] == list_targets["To Do"] %}
+        {% for item in view_model.to_do_items %}
           <li class="list-group-item">
           <div class="container">
               <div class = "row">
-                  <div class="col-9">
+                  <div class="col-9 overflow-auto">
                       <b>Title:</b> {{ item.name }} <br/>
-                      <b>Description</b> {{ item.description }} <br/>
-                      <b>Due date: </b> {{ item.due_date }}
+                      <b>Description:</b> {{ item.description }} <br/>
+                      <b>Due date:</b> {{ item.due_date }}
                  </div>
+                  <div class = "col-2">
+                      <a class ="btn btn-primary" href="doing_item/{{ item.id }}" role="button">
+              Doing
+              </a>
+                  </div>
+                  <div class = "col-1">
+                      <a class ="btn btn-danger" href="delete_item/{{ item.id }}" role="button">
+              Delete
+              </a>
+                  </div>
+              </div>
+          </div>
+          </li>
+        {% endfor %}
+      </ul>
+    <h3 class="mb-3">Doing</h3>
+      <ul class="list-group mb-4">
+        {% for item in view_model.doing_items %}
+          <li class="list-group-item">
+          <div class="container">
+              <div class = "row">
+                  <div class="col-7 overflow-auto">
+                      <b>Title:</b> {{ item.name }} <br/>
+                      <b>Description:</b> {{ item.description }} <br/>
+                      <b>Due date:</b> {{ item.due_date }}
+                 </div>
+                  <div class = "col-2">
+                      <a class ="btn btn-warning" href="to_do_item/{{ item.id }}" role="button">
+              To do
+              </a>
+                  </div>
                   <div class = "col-2">
                       <a class ="btn btn-success" href="complete_item/{{ item.id }}" role="button">
               Completed
@@ -38,18 +69,18 @@
       </ul>
       <h3 class="mb-3 mt-3">Completed</h3>
       <ul class="list-group mb-4">
-          {% for item in items if item["idList"] == list_targets["Done"] %}
+          {% for item in view_model.done_items %}
               <li class="list-group-item">
           <div class="container">
               <div class = "row">
-                  <div class="col-9">
+                  <div class="col-9 overflow-auto">
                       <b>Title:</b> {{ item.name }} <br/>
-                      <b>Description</b> {{ item.description }} <br/>
-                      <b>Due date: </b> {{ item.due_date }}
+                      <b>Description:</b> {{ item.description }} <br/>
+                      <b>Due date:</b> {{ item.due_date }}
                  </div>
                   <div class = "col-2">
-                      <a class ="btn btn-outline-warning" href="uncomplete_item/{{ item.id }}" role="button">
-              To-do
+                      <a class ="btn btn-primary" href="doing_item/{{ item.id }}" role="button">
+              Doing
               </a>
                   </div>
                   <div class = "col-1">
