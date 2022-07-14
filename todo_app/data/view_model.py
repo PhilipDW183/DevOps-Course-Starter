@@ -11,3 +11,9 @@ class ViewModel:
     @property
     def list_targets(self):
         return self._list_targets
+
+    @property
+    def doing_items(self):
+        doing_items_id = self.list_targets.get("Doing")
+        doing_items = [item for item in self.items if item.idList == doing_items_id]
+        return doing_items
