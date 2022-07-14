@@ -13,16 +13,16 @@ class ViewModel:
         return self._list_targets
 
     @property
-    def doing_items(self):
-        doing_items_id = self.list_targets.get("Doing")
-        doing_items = [item for item in self.items if item.idList == doing_items_id]
-        return doing_items
-
-    @property
     def to_do_items(self):
         to_do_items_id = self.list_targets.get("To Do")
         to_do_items = [item for item in self.items if item.idList == to_do_items_id]
         return to_do_items
+
+    @property
+    def doing_items(self):
+        doing_items_id = self.list_targets.get("Doing")
+        doing_items = [item for item in self.items if item.idList == doing_items_id]
+        return doing_items
 
     @property
     def done_items(self):
